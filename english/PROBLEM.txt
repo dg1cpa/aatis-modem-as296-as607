@@ -1,0 +1,21 @@
+Problem 1:
+Since Kernel 2.6.16 the developer changed the USB-System.
+The LEDs don't switch of after you connected the modem to the computer.
+This is NOT an as296-tty driver Problem.
+We now search the Bug in the Firmware/Kernel.
+Solution:
+Use Kernel 2.6.15
+or send your as296-CPU to AAtis to exchange the firmware to "1.0h"
+
+Problem 2:
+./usb-as296-to-tty-d: relocation error: ./usb-as296-to-tty-d: undefined symbol: usb_detach_kernel_driver_np
+kissattach: open: Input/output error
+Solution:
+Please install an new libusb http://libusb.sourceforge.net/download.htm
+
+Problem 3:
+No DAMA support in Debian Kernels per default
+Solution:
+Recompile the kernel with Dama_Slave [x]
+or use Kernel 2.6.21 or newer
+

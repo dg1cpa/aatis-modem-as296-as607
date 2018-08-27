@@ -1,0 +1,41 @@
+#!/bin/bash
+#AX25 AAtis USB modem default options
+
+#don't forget to set your callsign in /etc/axports!!!
+
+#USB-Id see command lsusb
+USB_ID="auto"
+#USB_ID="7355:0296" #as296
+#USB_ID="7355:0607" #as607
+
+#use this linux internal virtual serial connection
+PTTY="/dev/ptypb"
+
+#set your ax25-IP
+IP="44.7.7.7"
+
+#wait some time after start transmiting, before sending data
+#in milliseconds
+TXDELAY="240"
+
+#Bautrate in Bit/s
+# 9600 = 9600bd
+# 1200 = 1200bd
+# 4800 = 4800bd
+# 9612 = 9600bd tx and 1200bd rx (satellit modi)
+# 1296 = 1200bd tx and 9600bd rx (satellit modi)
+BAUDRATE="9600"
+
+#in milliseconds
+SLOTTIME="100"
+
+#transmit persistence
+#0-255
+PERSISTENCE="255"
+
+#DAMA Support
+DAMA="1"
+
+#Debug Level
+DEBUG="0"
+

@@ -1,0 +1,10 @@
+Package: aatis-modem
+Version: 0.4.1-1
+Architecture: i386, amd64, arm
+Maintainer: Paul Friedrich <dg1cpa@web.de>
+Installed-Size: 68
+Depends: libc6 (>= 2.7-1), libusb-0.1-4 (>= 2:0.1.12)
+Section: hamradio
+Priority: extra
+Description: AAtis AS296 and AS607 Modem driver
+ Driver for AAtis AS296 and AS607 usb modem. AX25 Packet Radio.

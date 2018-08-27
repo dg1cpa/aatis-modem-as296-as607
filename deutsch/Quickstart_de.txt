@@ -1,0 +1,59 @@
+Achtung: Der Kernel der Debian-Distribution hat DAMA per default deaktivert und muss deswegen neu compiliert werden, wenn auf dem Digi DAMA verwendet wird.
+
+Wenn man selbst compilieren will:
+
+1. Prüfen ob folgende Softwarepakete installiert sind:
+   libax25 libusb ax25tools und ein Packet-terminal Programm
+
+   Wenn keine Kenntnisse über die AX25-Konfiguration vorliegen, sollte
+   man vielleicht einen Blick auf die AX25-Howto ->siehe z.b. www.google.de werfen.
+
+   Wenn man die Sourcen selbst compilieren möchte, benötigt man
+   libax25, libusb (header/developer packages)
+
+
+
+Wenn man das Aatis-modem installiert hat:
+
+2. Ersetze "??????" mit dem Eigenen Rufzeichen und füge folgende Zeile
+   zu der Datei /etc/ax25/axports dazu (Baudrate ist hier egal, da woanders eingestellt)
+ax0     ??????-10        9600    255     7       430MHZ
+
+3. (wenn man will kann man dort einige Optionen ändern z.B. 1k2/9k6 usw. in /etc/init.d/default/aatis-modem)
+
+4. Starte den Modem driver als root:
+   /etc/init.d/aatis-modem ax0 start
+
+   danach ist es möglich ein PR-Terminal zu starten z.B. "linkt"
+
+   ...oder man macht mit dem in ax25-apps mitgelieferten minimal PR-Terminal einen Test
+   (DB0ABL connecten) 
+axcall ax0 DB0ABL
+
+
+######################################################################
+
+Zusatzinformationen:
+#Mögliche Optionen um den usb-tty converter zu starten
+#
+# -m = mode 
+# modes: 9600 -> 9k6 FSK
+#        4800 -> 4k8 FSK
+#        1200 -> 1k2 AFSK
+#        1296 -> 9k6 FSK(tx) and 1k2 AFSK(rx) Satelliten Modi
+#        9612 -> 1k2 AFSK(tx) and 9k6 FSK(rx)
+#        pocs and poci -> pocsag mode for pager(testing)
+# -t = tydelay in ms (Wartezeit nach dem auf Sendung Schalten bevor Daten gesendet werden typisch: 120..250 )
+# -y = pseudotty mit der das Modem verbunden werden soll z.b. /dev/ptyp9
+# -Y = neue pseudotty (im Gegensatz zu -y wird hier die Datei angegeben in die der Dateiname der pseudotty Gegenseite geschrieben wird z.B. /tmp/ptyp)
+# -D = Dama Parameter (0=no DAMA, 1=set DAMA Parameter)
+# -s = slottime in ms    (dont use if DAMA=1)
+# -p = persistence 0-255 (dont use if DAMA=1)
+# -d = debug mode (0,1,2)
+#
+#Beispiel: 9k6 mit 220ms Txdelay
+./usb-as296-to-tty-d -m 9600 -t 220 -y /dev/ptyp9 &
+
+#neu
+./usb-as296-to-tty-d -m 9600 -t 220 -Y /tmp/ttyname &
+

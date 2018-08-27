@@ -1,0 +1,46 @@
+0.1.2 20060329
+ -add german Quickstart
+ -add pseudo tty device node generation
+ -add usb error counter (if as296 disconnected the as296-tty use full cpu time)
+  but sometimes there are some errors from usb
+ -add usbhid driver unload from as296 usb device(linux specific!)
+
+0.1.3 20060330
+ -add Slottime/Persistence mechanism
+ -do some workaround for USB communication errors...
+
+0.1.4 20070220
+ -work around: problem as296_usb_write() returns timeout, but has sent data ->libusb
+               reduce usb tx timeout
+ -work around: problem as296_usb_read() returns wrong sizes ->libusb
+               static ever 8 bytes read
+ -solved problem: kissattach don't start -> open tty with O_NONBLOCK an use poll() for waiting
+ -kisscheck: check if a packet from tty is a true kiss packet
+
+0.1.5 20070312
+ -solve script problems
+ -work around usb_tx_timeout=0
+ -source cleanup
+
+Many thanks to DL5MLO for much code review and adds
+
+0.1.6 20070604
+ -solve bug which leads to problems with kernel 2.6.18 usb
+
+0.1.7 20070619
+ -platform compatiblity fix
+ -script reoganistation
+ -config file in /etc/aatis-modem.conf
+ -add support for as607 modem
+ -add ability to set the vendor/product id
+ -add support for auto modem recognising
+ -modems are now hotplug able
+
+0.1.8 20080109
+ -solve fork problem if modem repluged on USB
+
+0.2.0 20091120
+ -new unix98 pseudotty support  
+
+0.4.1 20180827
+ -fix some problems mktemp file, code cleanup

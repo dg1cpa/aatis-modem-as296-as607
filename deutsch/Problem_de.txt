@@ -1,0 +1,30 @@
+Problem 1:
+Seit Kernel 2.6.16 funktionieren keine AS296-Modems mit Version bis 1.0g mehr.
+Die 2 LEDs verlöschen nicht, nach dem Anstecken des Modems an den Computer.
+Das ist kein as296-tty Treiber Problem.
+
+Lösung:
+Benutze Kernel 2.6.15
+oder sende die as296-CPU to AAtis, um sie gegen eine firmware to "1.0h" oder höher zu tauschen
+
+Problem 2:
+./usb-as296-to-tty-d: relocation error: ./usb-as296-to-tty-d: undefined symbol: usb_detach_kernel_driver_np
+kissattach: open: Input/output error
+Die libusb ist zu alt.
+
+Lösung:
+Neue libusb installieren http://libusb.sourceforge.net/download.htm
+
+Problem 3:
+Im Default Debian-Kernel ist die AX25->[x]DAMA-Slave Option deaktiviert
+
+Solution:
+Kernel-Sourcen installieren und mit Dama_Slave [x] neu compilieren
+oder Kernel 2.6.21 oder neuer nutzen
+
+Problem 4:
+Es gibt keine Pseudo tty's /dev/ptyp ttyp mehr
+
+Lösung:
+Auf die neuen pseudo tty umsteigen
+Siehe Parameter -Y

@@ -1,0 +1,12 @@
+Source: aatis-modem
+Section: hamradio
+Priority: extra
+Maintainer: Paul Friedrich <dg1cpa@web.de>
+Build-Depends: debhelper (>= 5), libusb-dev (>= 0.1.4) libax25-dev (>= 0.0.4)
+Standards-Version: 3.7.2
+
+Package: aatis-modem
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: AAtis AS296 and AS607 Modem driver
+ Driver for AAtis AS296 and AS607 usb modem. AX25 Packet Radio.

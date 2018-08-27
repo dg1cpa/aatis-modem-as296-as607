@@ -1,0 +1,74 @@
+#!/bin/sh
+#example:
+#/etc/init.d/aatis-modem ax0 start
+#set -x
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/usr/sbin/usb-as296-to-tty-d
+
+
+[ -f /etc/default/aatis-modem ] && . /etc/default/aatis-modem
+
+AXDEV=$1
+
+case "$2" in
+  start)
+          echo -n "Starting AAtis Modem"
+	  OPTIONS="-m ${BAUDRATE} -t ${TXDELAY} -p ${PERSISTENCE} -s ${SLOTTIME} -D ${DAMA} -d ${DEBUG}"
+	  #kill modem driver
+          ps xau|awk '/as296-t.*-m/{if ($0 ~ /awk/) next; system("kill "$2)}'
+          #kill kissattach
+	  ps ax|awk -v A=${AXDEV} '/kissattach/{if($0 ~ /awk/) next; if($0 ~ A) system("kill "$1)}'
+
+          TMPFILE=`mktemp`
+          #start modem driver
+          $DAEMON $OPTIONS -Y ${TMPFILE} &
+          sleep 1
+          PTTY=`cat ${TMPFILE}`
+
+          echo "attach pseudotty to ax25-kernel"
+          kissattach ${PTTY} ${AXDEV} ${IP}
+
+          #set Protokoll DAMA-Slave (for DAMA Digis)
+	  echo "2" >/proc/sys/net/ax25/${AXDEV}/protocol
+	  echo "13600" >/proc/sys/net/ax25/${AXDEV}/dama_slave_timeout
+
+        #linear T1
+        echo "0" >/proc/sys/net/ax25/${AXDEV}/backoff_type
+        #FRACK Timer
+        echo "1300" >/proc/sys/net/ax25/${AXDEV}/t1_timeout
+        #Responce Timer
+        echo "10" >/proc/sys/net/ax25/${AXDEV}/t2_timeout
+        #Connect control timer (if connect idle)
+        echo "40000" >/proc/sys/net/ax25/${AXDEV}/t3_timeout
+        echo "31" >/proc/sys/net/ax25/${AXDEV}/maximum_retry_count
+        #echo "20" >/proc/sys/net/ax25/${AXDEV}/maximum_packet_length
+        #compatibility warnings please read the "PROBLEM.txt"
+        cat /proc/sys/net/ax25/${AXDEV}/protocol|awk '/0/{print("Warning: Your Linuxkernel has not compiled in DAMA-Support? http://www.linux-ax25.org/wiki/DAMA - please recompile your Kernel with Option \"DAMA-Slave\" if you need DAMA")}'
+
+        ;;
+  stop)
+          echo -n "Stopping AAtis-Modem"
+          ps xau|awk '/as296-t.*-m/{if ($0 ~ /awk/) next; system("kill "$2)}'
+	  #only for our kiss device...        killall kissattach
+          ps ax|awk -v A=${AXDEV} '/kissattach/{if($0 ~ /awk/) next; if($0 ~ A) system("kill "$1)}'
+			  
+	  #       if start-stop-daemon --quiet --stop --signal 0 --exec $DAEMON
+	  #       then
+	  #               start-stop-daemon --quiet --stop --exec $DAEMON
+	  #               echo "."
+	  #       else
+	 #               echo "[not running]";
+	 #       fi
+	  ;;
+    force-reload|restart)
+	    $0 stop
+            sleep 1
+            $0 start
+            ;;
+  *)
+      echo "Usage: /etc/init.d/aatis-modem AXDEV {start|stop|restart|force-reload} example aatis-modem ax0 start"
+      exit 1
+  esac
+											      
+  exit 0
+											      

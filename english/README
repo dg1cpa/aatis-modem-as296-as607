@@ -1,0 +1,49 @@
+* Date: 13.02.07
+* Author: dg1cpa@web.de
+*
+* OS: Linux
+* The driver is designed to run on other OS's Unix, Bsd, Macos (needs libusb), but need little bit work?
+* He is not depend on the Linuxkernel!
+*
+* Ham Radio Modem driver
+* for AS296 and AS607 USB-Modem from AAtis (9600bd FSK, 4800bd FSK, 1200bd AFSK)
+*
+* This driver connects a AS296 USB Modem to a tty (pseudo-tty)
+* from the other side of the pseudo-tty you can connect a kiss-driver (kissattach)
+* The kissdriver has to use the "rmnc-crc" protocol
+*
+* This program is distributed under the GPL, version 3.
+*
+* Download: git clone https://github.com/dg1cpa/aatis-modem-as296-as607.git
+
+Overview:
+(old schema mit alten pseudotty's, today: /dev/ptmx /dev/pts/* )
+ [AS296-USB-Modem]->[Kernel:USB]->USBLib->[usb-as296-to-tty-d]->pseudotty->[Kernel]->pseudottyoutput->kissattach->[Kernel:ax25]
+
+
+                                                   [Packet Terminal (Linkt)]
+                                                                        |
+                                       [kissattach]                     |
+        +-[usb-as296-to-tty-d]-+   +----------------+                   |
+        |           /dev/ptyp9 |   | /dev/ttyp9     |(ax0)              |
+ -------------------------------------------------------------------------------
+ | USB-Lib-API               PSEUDO-TTY     AX25/Kiss(rmnc-CRC)       ax25k    |
+ |                          Linux-Kernel                                       |
+ | USB-Host-driver                                                             |
+ -------------------------------------------------------------------------------
+         |
+  [AS296-USB-Modem]
+
+Its recommended to use kernel 2.6.15 to be most compatible with the as296-Modem
+
+----------------------------------------------------
+Info: 
+
+Pseudotty: A special tty
+Each tty has a 2nd tty with the same number. 
+If you write in one tty it can be read from the other side an reverse.
+ /dev/ptyp7 <-> /dev/ttyp7
+
+HID: Human Input Device (USB)
+Like Mouse, Keyboard etc...
+

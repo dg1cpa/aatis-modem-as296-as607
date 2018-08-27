@@ -1,0 +1,56 @@
+#be sure you have installed libax25 libusb ax25tools and a packet-terminal
+#if you never setup ax25 under linux please read the "ax25-howto"
+
+#if you LIKE to compile the source self, you need the libax25 and libusb header/developer packages
+#Download: git clone https://github.com/dg1cpa/aatis-modem-as296-as607.git
+#cd aatis-modem-as296-as607
+#make
+#make install
+
+OR install a ready Package from your Linux distribution
+
+#1.
+#replace the ?????? with your amateur radio call
+#and add the following line to /etc/ax25/axports
+ax0     ??????-10        9600    255     7       430MHZ
+#the baud rate her isnt used from modem driver
+
+NOW your can start the shell script "/etc/init.d/aatis-modem start"
+Modify /etc/default/aatis-modem for your needed options
+
+Start the Modem driver:
+/etc/init.d/aatis-modem ax0 start
+
+after that you are able to start a AX25-Terminal like "LINKT" or "call"
+
+#or now you can give it a try
+#the red ptt-tx led should now light up now (transmit)...
+axcall ax0 DIGICALL
+
+
+######################################################################
+#if you have problems at this point search about the "AX25-Howto"
+
+#Options to start the usb-tty converter
+#
+# -m = mode 
+# modes: 9600 -> 9k6 FSK
+#        4800 -> 4k8 FSK
+#        1200 -> 1k2 AFSK
+#        1296 -> 9k6 FSK(tx) and 1k2 AFSK(rx) satellit modes
+#        9612 -> 1k2 AFSK(tx) and 9k6 FSK(rx)
+#        pocs and poci -> pocsag mode for pager(testing)
+# -t = tydelay in ms
+# -y = pseudotty
+# -D = Dama Parameter (0=no DAMA, 1=set DAMA Parameter)
+# -s = slottime in ms    (dont use if DAMA=1)
+# -p = persistence 0-255 (dont use if DAMA=1)
+# -d = debug mode (0,1,2)
+#
+#example:
+./usb-as296-to-tty-d -m 9600 -t 220 -y /dev/ptyp9 &
+
+#now you can give it a try
+#the red ptt-tx led should now light up now (transmit)...
+call ax0 DIGICALL
+
